@@ -11,9 +11,7 @@ const db = require('./sql/connection')
 
 // app.use(cors())
 app.use(express.json())
-app.get('/', (req, res) => {
-  res.send('Welcome to my API')
-})
+app.use(express.static('build'))
 
 app.post('/api/user/register', async (req, res) => {
   try {
@@ -198,6 +196,10 @@ app.delete('/api/addresses', (req, res) => {
     }
     res.sendStatus(200)
   })
+})
+
+app.get('*', (req, res) => {
+  res.sendFile(`${__dirname}/build/index.html`)
 })
 
 app.listen(port, () => console.log(`listening on port ${port}`))
