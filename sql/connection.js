@@ -6,14 +6,10 @@ class Connection {
       console.log('creating connection pool...')
       this.pool = mysql.createPool({
         connectionLimit: 100,
-        // host: 'us-cdbr-east-06.cleardb.net',
-        // user: 'bb0854fbbda4f3',
-        // password: '4985d4fa',
-        // database: 'heroku_c5c7735bfc50ff8'
-        host: '127.0.0.1',
-        user: 'jordan',
-        password: 'password',
-        database: 'address_it'
+        host: process.env.LOCALDB_HOST,
+        user: process.env.LOCALDB_USER,
+        password: process.env.LOCALDB_PASSWORD,
+        database: process.env.LOCALDB_SCHEMA
       })
       return this.pool;
     }
