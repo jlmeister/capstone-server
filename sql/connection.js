@@ -16,7 +16,7 @@ class Connection {
     return this.pool;
   }
 }
-// mysql://bb0854fbbda4f3:4985d4fa@us-cdbr-east-06.cleardb.net/heroku_c5c7735bfc50ff8?reconnect=true
+
 const instance = new Connection();
 
 module.exports = instance
