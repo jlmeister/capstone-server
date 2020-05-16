@@ -9,22 +9,11 @@ const { client, Lookup } = require("./services/smartystreets/streetLookup.js");
 const mysql = require('mysql')
 const db = require('./sql/connection')
 
-app.use(cors())
+// app.use(cors())
 app.use(express.json())
 app.get('/', (req, res) => {
   res.send('Welcome to my API')
 })
-
-/**
- * @requirements
- * set up new user ✅
- * sign in as existing user ✅
- * verify an address ✅
- * add a new address ✅
- * edit an existing address ✅
- * get addresses for a given user id ✅
- * delete an existing address ✅
- */
 
 app.post('/api/user/register', async (req, res) => {
   try {
@@ -115,7 +104,7 @@ app.post('/api/addresses/add', (req, res) => {
     req.body.state,
     req.body.zipCode,
     req.body.plus4Code,
-    req.body.id
+    req.body.userID
   ]
   sql = mysql.format(sql, replacements)
 
@@ -129,8 +118,9 @@ app.post('/api/addresses/add', (req, res) => {
   })
 })
 
-app.put('/api/addresses/update', (req, res) => {
-  let sql = 'UPDATE ?? SET ??=?, ??=?, ??=?, ??=?, ??=?, ??=?, ??=?, ??=?, ??=? WHERE ??=?'
+app.post('/api/addresses/update', (req, res) => {
+  console.log('******* HI IM THE BODY *******\n', req.body)
+  let sql = 'UPDATE ?? SET ??=?, ??=?, ??=?, ??=?, ??=?, ??=?, ??=?, ??=?, ??=?, ??=?, ??=? WHERE ??=?'
   const replacements = [
     'addresses',
     'delivery_line',
@@ -156,7 +146,7 @@ app.put('/api/addresses/update', (req, res) => {
     'plus4code',
     req.body.plus4Code,
     'id',
-    req.body.id
+    req.body.addressID
   ]
   sql = mysql.format(sql, replacements)
 
@@ -165,17 +155,18 @@ app.put('/api/addresses/update', (req, res) => {
       console.log('error updating address:\n')
       throw err
     }
-    console.log('these are the results ', results)
+    console.log('these are the results after updating... ', results)
     return res.sendStatus(200)
   })
 })
 
-app.get('/api/addresses', (req, res) => {
+app.get('/api/addresses/:id', (req, res) => {
+  console.log('parameters ', req.params)
   let sql = 'SELECT * FROM ?? WHERE ??=?'
   const replacements = [
     'addresses',
     'user_id',
-    req.body.id
+    req.params.id
   ]
   sql = mysql.format(sql, replacements)
 
